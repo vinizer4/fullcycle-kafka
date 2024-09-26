@@ -1,9 +1,11 @@
-FROM golang:1.16
-
+FROM golang:1.16-buster
+# Definir o diretório de trabalho
 WORKDIR /go/src
-ENV PATH="/go/bin:${PATH}"
-
-RUN apt-get update && \
-    apt-get install build-essential librdkafka-dev -y
-
+# Atualizar pacotes e instalar dependências
+RUN apt-get update && apt-get install -y build-essential
+# Copiar o código-fonte da aplicação
+COPY . .
+# Baixar as dependências Go
+RUN go mod tidy
+# Rodar o comando padrão
 CMD ["tail", "-f", "/dev/null"]
